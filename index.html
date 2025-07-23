@@ -3,112 +3,178 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Laporan Error & Request | Sistem Lengkap</title>
+<title>Laporan Error & Request</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <style>
   body {
     font-family: 'Segoe UI', sans-serif;
-    background: #111;
-    color: #fff;
+    background: #0d1117;
+    color: #e6edf3;
     padding: 20px;
-    min-height: 100vh;
     margin: 0;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
   }
   .container {
-    max-width: 800px;
     width: 100%;
+    max-width: 860px;
   }
-  h1,h2 {
+  h1, h2 {
     text-align: center;
-    margin-top: 0;
+    margin: 0 0 20px;
   }
+
   input, select, textarea, button {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
+    padding: 12px 14px;
+    border-radius: 6px;
     border: none;
-    background: #222;
-    color: white;
+    background: #161b22;
+    color: #fff;
+    margin-top: 8px;
+    font-size: 14px;
     box-sizing: border-box;
+    transition: all 0.3s;
   }
+
+  input:focus, textarea:focus, select:focus {
+    outline: 2px solid #238636;
+    background: #0d1117;
+  }
+
   button {
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  button:hover {
-    background: #45a049;
-  }
-  button.btn-danger {
-    background: crimson;
-  }
-  .card {
-    background: #1e1e1e;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 15px;
-    border-left: 5px solid #4CAF50;
-    word-break: break-word;
-  }
-  .badge {
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    margin-right: 5px;
-    font-weight: bold;
-    user-select: none;
-  }
-  .pending {
-    background: orange;
-    color: black;
-  }
-  .done {
-    background: green;
+    background-color: #238636;
     color: white;
+    font-weight: bold;
+    margin-top: 12px;
+    cursor: pointer;
   }
-  .bug {
-    background: crimson;
+
+  button:hover:not(:disabled) {
+    background-color: #2ea043;
   }
-  .request {
-    background: teal;
+
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
+
+  button.btn-danger {
+    background-color: #da3633;
+  }
+
+  button.btn-danger:hover {
+    background-color: #e5534b;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .card {
+    background: #161b22;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+    border-left: 5px solid #238636;
+    box-shadow: 0 0 6px rgba(0,0,0,0.4);
+  }
+
   .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
     flex-wrap: wrap;
-    gap: 8px;
+    margin-bottom: 10px;
+    gap: 10px;
   }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    user-select: none;
+  }
+
+  .bug {
+    background: #f85149;
+    color: #fff;
+  }
+
+  .request {
+    background: #1f6feb;
+    color: #fff;
+  }
+
+  .pending {
+    background: #d29922;
+    color: #000;
+  }
+
+  .done {
+    background: #2ea043;
+    color: white;
+  }
+
   .empty {
     text-align: center;
     margin-top: 20px;
-    color: #aaa;
+    font-style: italic;
+    color: #8b949e;
   }
+
   #authForms {
-    max-width: 400px;
-    margin: 20px auto;
-    background: #222;
-    padding: 20px;
+    background: #161b22;
+    padding: 24px;
     border-radius: 8px;
-    box-sizing: border-box;
+    max-width: 420px;
+    margin: 0 auto 30px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
   }
+
   #logoutBtn {
-    background: crimson;
-    margin-top: 10px;
     width: auto;
-    padding: 10px 20px;
-  }
-  .small-link {
-    font-size: 12px;
-    color: #bbb;
+    display: block;
+    margin: 0 auto 20px;
+    padding: 10px 18px;
+    background: #da3633;
+    font-weight: bold;
     cursor: pointer;
+  }
+
+  .small-link {
+    font-size: 13px;
+    color: #58a6ff;
     text-decoration: underline;
-    margin-top: 5px;
+    cursor: pointer;
     display: inline-block;
+    margin-top: 5px;
+  }
+  .card {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media screen and (max-width: 600px) {
+    .card-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    input, select, textarea, button {
+      font-size: 16px;
+    }
   }
 </style>
+
 </head>
 <body>
 
@@ -156,7 +222,9 @@
         <label>Deskripsi</label>
         <textarea id="desc" rows="4" placeholder="Tulis detail laporan..."></textarea>
       </div>
-      <button onclick="addReport()">Kirim Laporan</button>
+      <button id="sendReportBtn" onclick="addReport()">
+        <i class="fa fa-paper-plane"></i> Kirim Laporan
+      </button>
     </div>
 
     <hr />
@@ -177,19 +245,22 @@
   const firebaseConfig = {
     apiKey: "AIzaSyC5UTaYB6w0fKryxiBJ6rw5yNKXlpbzuR4",
     authDomain: "reportsystem-a56cd.firebaseapp.com",
-    projectId: "reportsystem",
+    projectId: "reportsystem-a56cd",
     storageBucket: "reportsystem-a56cd.firebasestorage.app",
     messagingSenderId: "900469989246",
     appId: "1:900469989246:web:d75383f5c5bb1515325d2f",
-    measurementId : "G-1DGBZJRKNR"
+    measurementId: "G-1DGBZJRKNR"
   };
 
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig)
+  console.log("✅ Firebase initialized");
   const auth = firebase.auth();
   const db = firebase.firestore();
 
+  console.log("✅ Firebase Auth dan Firestore siap:", { auth, db });
+
   const adminEmails = [
-    "admin@example.com" // Ganti dengan email admin kamu
+    "yudaaryaardhana1122@gmail.com" // Ganti dengan email admin kamu
   ];
 
   // Elements
@@ -207,6 +278,7 @@
   const showResetLink = document.getElementById("showReset");
   const resetPasswordDiv = document.getElementById("resetPasswordDiv");
   const resetEmailInput = document.getElementById("resetEmail");
+  const sendReportBtn = document.getElementById("sendReportBtn");
 
   let isLoginMode = true; // true = login, false = register
 
@@ -324,6 +396,9 @@
       return;
     }
 
+    sendReportBtn.disabled = true;
+    sendReportBtn.innerHTML = "Mengirim...";
+
     const report = {
       type,
       title,
@@ -340,6 +415,9 @@
       document.getElementById("desc").value = "";
     } catch (err) {
       alert("Gagal kirim laporan: " + err.message);
+    } finally {
+      sendReportBtn.disabled = false;
+      sendReportBtn.innerHTML = '<i class="fa fa-paper-plane"></i> Kirim Laporan';
     }
   }
 
@@ -354,10 +432,19 @@
           reportListDiv.innerHTML = `<p class="empty">Belum ada laporan yang masuk.</p>`;
           return;
         }
-        reportListDiv.innerHTML = "";
-        snapshot.forEach(doc => {
-          const r = { id: doc.id, ...doc.data() };
 
+        // Ambil semua data laporan, lakukan sort manual untuk yang createdAt null
+        const docs = [];
+        snapshot.forEach(doc => docs.push({ id: doc.id, ...doc.data() }));
+
+        docs.sort((a, b) => {
+          const aTime = a.createdAt?.toDate?.().getTime() || 0;
+          const bTime = b.createdAt?.toDate?.().getTime() || 0;
+          return bTime - aTime;
+        });
+
+        reportListDiv.innerHTML = "";
+        docs.forEach(r => {
           const card = document.createElement("div");
           card.className = "card";
 
@@ -430,4 +517,4 @@
 </script>
 
 </body>
-  </html>
+</html>
