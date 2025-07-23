@@ -163,15 +163,17 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  @media screen and (max-width: 600px) {
-    .card-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    input, select, textarea, button {
-      font-size: 16px;
-    }
+  /* Tambahan style untuk komentar admin */
+  .admin-comment-box {
+    margin-top: 10px;
+  }
+  .admin-comment-display {
+    margin-top: 10px;
+    border-left: 3px solid #2ea043;
+    padding-left: 8px;
+    font-style: italic;
+    background: #0b131a;
+    border-radius: 4px;
   }
 </style>
 
@@ -433,7 +435,6 @@
           return;
         }
 
-        // Ambil semua data laporan, lakukan sort manual untuk yang createdAt null
         const docs = [];
         snapshot.forEach(doc => docs.push({ id: doc.id, ...doc.data() }));
 
@@ -463,6 +464,10 @@
             `<button class="btn-danger" onclick="deleteReport('${r.id}')">Hapus</button>`
             : "";
 
+          // Tampilkan komentar admin jika ada
+          // Jika admin, tampilkan textarea & tombol simpan
+          // Jika user, tampilkan komentar sebagai teks biasa
+
           card.innerHTML = `
             <div class="card-header">
               <div>
@@ -477,6 +482,18 @@
             <strong>${r.title}</strong>
             <p>${r.desc}</p>
             <small>Dibuat oleh: ${r.createdBy || "Anonim"}<br/>${dateStr}</small>
+
+            ${isAdmin ? `
+              <div class="admin-comment-box">
+                <textarea id="comment-${r.id}" rows="3" placeholder="Tulis komentar admin...">${r.adminComment || ""}</textarea>
+                <button onclick="saveAdminComment('${r.id}')">Simpan Komentar</button>
+              </div>
+            ` : r.adminComment ? `
+              <div class="admin-comment-display">
+                <strong>Komentar Admin:</strong>
+                <p>${r.adminComment}</p>
+              </div>
+            ` : ""}
           `;
 
           reportListDiv.appendChild(card);
@@ -512,6 +529,27 @@
       } catch (err) {
         alert("Gagal menghapus laporan: " + err.message);
       }
+    }
+  }
+
+// Simpan komentar admin
+  async function saveAdminComment(id) {
+    if (!isAdmin) {
+      alert("Hanya admin yang dapat menyimpan komentar.");
+      return;
+    }
+    const textarea = document.getElementById(`comment-${id}`);
+    if (!textarea) return;
+
+    const comment = textarea.value.trim();
+
+    try {
+      await db.collection("reports").doc(id).update({
+        adminComment: comment
+      });
+      alert("Komentar admin berhasil disimpan.");
+    } catch (err) {
+      alert("Gagal menyimpan komentar: " + err.message);
     }
   }
 </script>
